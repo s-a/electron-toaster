@@ -1,4 +1,9 @@
-# Usage
+## Installation
+```bash
+npm install --save electron-toaster
+```
+
+## Usage
 
 ```javascript
 	var Toaster = require("electron-toaster");
