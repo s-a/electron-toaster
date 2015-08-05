@@ -1,0 +1,25 @@
+{
+  "name": "electron-toaster",
+  "version": "1.0.0",
+  "description": "a simple toaster for electron",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s-a/electron-toaster.git"
+  },
+  "keywords": [
+    "electron",
+    "toaster",
+    "notify",
+    "desktop-notification"
+  ],
+  "author": "Stephan Ahlf <stephan.ahlf@gmail.com> (https://github.com/s-a)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/s-a/electron-toaster/issues"
+  },
+  "homepage": "https://github.com/s-a/electron-toaster#readme"
+}

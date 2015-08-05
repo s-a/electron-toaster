@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>toaster</title>
+	<!-- <link rel="stylesheet" type="text/css" href="bower_components/material-design-lite/material.min.css"> -->
+	<link rel="stylesheet" type="text/css" href="bower_components/octicons/octicons/octicons.css">
+	<style type="text/css">
+		*{margin: 0;padding:0;}
+		body, html{
+			font: 13px/1.4 Helvetica,arial,nimbussansl,liberationsans,freesans,clean,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+
+		}
+
+		.ico{
+			color: white;
+			font-size: 32px;
+			padding: 11px;
+		}
+
+		#title{
+			font-weight:bold;
+			font-size: 18px;
+		}
+
+		#message{
+			font-size: 14px;
+		}
+
+		#detail{
+			font-weight:bold;
+			font-size: 12px;
+			color: red;
+		}
+
+		table{
+			width: 100%;
+		}
+	</style>
+</head>
+	<body>
+		<table>
+			<tbody>
+				<row>
+					<td style="background-color:silver;" width="90" cellpadding="0">
+						<div style="text-align:center;">
+							<span class="mega-octicon octicon-alert ico"></span>
+						</div>
+					</td>
+					<td cellpadding="30">
+						<div style="padding:22px;">
+							<span id="title"></span><hr>
+							<span id="message"></span><br><br><br>
+							<span id="detail"></span>
+						</div>
+					</td>
+				</row>
+			</tbody>
+		</table>
+		<script type="text/javascript" src="client.js"></script>
+	</body>
+</html>
+
+
