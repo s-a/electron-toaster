@@ -50,7 +50,10 @@ Toaster.prototype.show = function(msg) {
 			timer = setTimeout(function  () {
 				moveWindow(display.workAreaSize.height - i, function(){
 					if (i === Math.round(height/10)){ // show after first pos set to avoid flicker.
-						self.window.show(); 
+						self.window.show();
+							if (msg.focus === undefined || msg.focus){
+								remote.getCurrentWindow().focus();
+							}
 					}
 					slideUp(cb);
 				});
@@ -77,9 +80,6 @@ Toaster.prototype.show = function(msg) {
 		height = self.window.getSize()[1];
 //		self.window.setPosition(display.workAreaSize.width, display.workAreaSize.height);
 		slideUp(function(){});
-		if (msg.focus){
-			remote.getCurrentWindow().focus();
-		}
 		/*
 			# since https://github.com/atom/electron/issues/2425 --> code goes to client.js
 			var window = this;
