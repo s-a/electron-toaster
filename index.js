@@ -5,14 +5,13 @@ var Toaster = function  () {
 	return this;
 }
 
+
+
 Toaster.prototype.show = function(msg) {
 	var self = this;
-	var height = msg.height;
-	var width = msg.width;
-
 	this.window = new BrowserWindow({
-		width: width,
-		height: height,
+		width: msg.width,
+		/*height: 1,*/
 		title : msg.title || "toaster",
 		icon: __dirname + '/icon.png',
 		transparent: false,
@@ -23,12 +22,10 @@ Toaster.prototype.show = function(msg) {
 	});
 
 
-	var timer ;
+	var timer,height, width;
 	var screen = remote.require('screen');
 	var pos = remote.getCurrentWindow().getPosition();
 	var display = screen.getDisplayNearestPoint({x:pos[0], y:pos[1]});
-	var newWidh = display.workAreaSize.width - width;
-	this.window.setPosition(newWidh, display.workAreaSize.height);
 
 	/*this.window.on('closed', function() {
 		try{
@@ -38,11 +35,14 @@ Toaster.prototype.show = function(msg) {
 	});*/
 
 	var moveWindow = function(pos, done) {
-		self.window.setPosition(newWidh, pos);
-		done();
+		try{
+			self.window.setPosition(display.workAreaSize.width - width - 5, pos);
+		} catch(e){} finally {
+			done();
+		}
 	};
 
-
+	//this.window.setPosition(newWidh + 20, display.workAreaSize.height + 100);
 	var i = 0;
 	var slideUp = function  (cb) {
 		if (i < height){
@@ -57,20 +57,37 @@ Toaster.prototype.show = function(msg) {
 		}
 	};
 
-	this.window.setPosition(newWidh, display.workAreaSize.height);
-	var htmlFile = msg.htmlFile || 'file://' + __dirname + '/toaster.html?';
-	this.window.loadUrl(htmlFile + 'foo=bar&title=' + encodeURIComponent(msg.title || "") + '&message=' + encodeURIComponent(msg.message || "") + '&detail=' + encodeURIComponent(msg.detail || "") + "&timeout=" + msg.timeout || 5000 );
 
-	this.window.webContents.on('dom-ready', function(){
-		self.window.show();
+	var htmlFile = msg.htmlFile || 'file://' + __dirname + '/toaster.html?';
+	htmlFile += htmlFile + 'foo=bar&title=' + encodeURIComponent(msg.title || "") + '&message=' + encodeURIComponent(msg.message || "") + '&detail=' + encodeURIComponent(msg.detail || "") + "&timeout=" + (msg.timeout || 5000);
+	this.window.loadUrl(htmlFile);
+
+	/*
+		# for debugging
+		this.window.maximize();
+		this.window.openDevTools();
+	*/
+
+	this.window.webContents.on('did-finish-load', function(){
+		//var newSize = self.window.getSize();
+		width = self.window.getSize()[0];
+		height = self.window.getSize()[1];
+//		self.window.setPosition(display.workAreaSize.width, display.workAreaSize.height);
 		slideUp(function(){});
+		self.window.show();
+		if (msg.focus){
+			console.log("focus");
+			remote.getCurrentWindow().focus();
+		}
+		/*console.log(height);
+		*/
 		/*
-		# since https://github.com/atom/electron/issues/2425 --> code goes to client.js
-		var window = this;
-		window.document.addEventListener("click", this.window.close);
-		window.document.getElementById("description").innerHTML = "helo";
-		window.document.getElementById("details").innerHTML = "helo";
-		window.document.getElementById("title").innerHTML = "helo";
+			# since https://github.com/atom/electron/issues/2425 --> code goes to client.js
+			var window = this;
+			window.document.addEventListener("click", this.window.close);
+			window.document.getElementById("description").innerHTML = "helo";
+			window.document.getElementById("details").innerHTML = "helo";
+			window.document.getElementById("title").innerHTML = "helo";
 		*/
 	});
 };

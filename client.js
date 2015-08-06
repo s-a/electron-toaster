@@ -1,25 +1,45 @@
 function getQueryVariable(variable) {
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i=0;i<vars.length;i++) {
-    var pair = vars[i].split("=");
-    if (pair[0] === variable) {
-      return decodeURIComponent(pair[1]);
-    }
-  }
+	var query = window.location.search.substring(1);
+	var vars = query.split("&");
+	for (var i=0;i<vars.length;i++) {
+		var pair = vars[i].split("=");
+		if (pair[0] === variable) {
+			return decodeURIComponent(pair[1]);
+		}
+	}
 }
 
-document.getElementById("title").innerHTML = getQueryVariable("title");
-document.getElementById("message").innerHTML = getQueryVariable("message");
-document.getElementById("detail").innerHTML = getQueryVariable("detail");
+var autoSize = function() {
+	var heightOffset = window.outerHeight - window.innerHeight;
+	var widthOffset = window.outerWidth - window.innerWidth;
+	var result = {
+		height : document.getElementById("content").clientHeight + heightOffset,
+		width : document.getElementById("content").clientWidth + widthOffset
+	}
+
+	window.resizeTo(result.width, result.height);
+
+	return result;
+};
+
 
 var onKeydown = function(/*e*/) {
 	window.close();
 };
 
-document.addEventListener("click", window.close);
-document.addEventListener("keydown", onKeydown, false);
+var onLoad = function load(/*event*/){
+	autoSize();
+    this.removeEventListener("load", load, false); //remove listener, no longer needed
 
-window.setTimeout(function() {
-	this.close();
-}, parseInt(getQueryVariable("timeout")));
+	this.setTimeout(function() {
+		this.close();
+		document.addEventListener("keydown", onKeydown, false);
+	}, parseInt(getQueryVariable("timeout")));
+
+	document.addEventListener("click", window.close);
+};
+
+document.getElementById("title").innerHTML = getQueryVariable("title");
+document.getElementById("message").innerHTML = getQueryVariable("message");
+document.getElementById("detail").innerHTML = getQueryVariable("detail");
+window.addEventListener("load", onLoad, false);
