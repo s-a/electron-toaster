@@ -36,7 +36,7 @@ Toaster.prototype.show = function(msg) {
 
 	var moveWindow = function(pos, done) {
 		try{
-			self.window.setPosition(display.workAreaSize.width - width - 5, pos);
+			self.window.setPosition(display.workAreaSize.width - width - 4, pos);
 		} catch(e){} finally {
 			done();
 		}
