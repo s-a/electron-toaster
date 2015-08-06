@@ -76,11 +76,8 @@ Toaster.prototype.show = function(msg) {
 		slideUp(function(){});
 		self.window.show();
 		if (msg.focus){
-			console.log("focus");
 			remote.getCurrentWindow().focus();
 		}
-		/*console.log(height);
-		*/
 		/*
 			# since https://github.com/atom/electron/issues/2425 --> code goes to client.js
 			var window = this;
