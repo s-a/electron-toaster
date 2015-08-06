@@ -1,6 +1,6 @@
 {
   "name": "electron-toaster",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a simple toaster for electron",
   "main": "index.js",
   "scripts": {
