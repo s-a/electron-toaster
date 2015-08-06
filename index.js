@@ -49,6 +49,9 @@ Toaster.prototype.show = function(msg) {
 			i += Math.round(height/10);
 			timer = setTimeout(function  () {
 				moveWindow(display.workAreaSize.height - i, function(){
+					if (i === Math.round(height/10)){ // show after first pos set to avoid flicker.
+						self.window.show(); 
+					}
 					slideUp(cb);
 				});
 			}, 1);
@@ -74,7 +77,6 @@ Toaster.prototype.show = function(msg) {
 		height = self.window.getSize()[1];
 //		self.window.setPosition(display.workAreaSize.width, display.workAreaSize.height);
 		slideUp(function(){});
-		self.window.show();
 		if (msg.focus){
 			remote.getCurrentWindow().focus();
 		}
