@@ -33,9 +33,9 @@ var onLoad = function load(/*event*/){
 
 	this.setTimeout(function() {
 		this.close();
-		document.addEventListener("keydown", onKeydown, false);
 	}, parseInt(getQueryVariable("timeout")));
 
+	document.addEventListener("keydown", onKeydown, false);
 	document.addEventListener("click", window.close);
 };
 

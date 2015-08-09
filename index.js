@@ -1,13 +1,10 @@
-var remote = require("remote");
-var BrowserWindow = remote.require('browser-window');  // Module to create native browser window.
 
-var Toaster = function  () {
-	return this;
-}
+var BrowserWindow = require('browser-window');  // Module to create native browser window.
+// In main process.
+var ipc = require('ipc');
 
 
-
-Toaster.prototype.show = function(msg) {
+var showToaster = function(currentWindow, msg) {
 	var self = this;
 	this.window = new BrowserWindow({
 		width: msg.width,
@@ -23,16 +20,16 @@ Toaster.prototype.show = function(msg) {
 
 
 	var timer,height, width;
-	var screen = remote.require('screen');
-	var pos = remote.getCurrentWindow().getPosition();
+	var screen = require('screen');
+	var pos = currentWindow.getPosition();
 	var display = screen.getDisplayNearestPoint({x:pos[0], y:pos[1]});
 
-	/*this.window.on('closed', function() {
+	this.window.on('closed', function() {
 		try{
 			clearTimeout(timer) ;
 			self.window = null;
 		}catch(e){}
-	});*/
+	});
 
 	var moveWindow = function(pos, done) {
 		try{
@@ -42,7 +39,6 @@ Toaster.prototype.show = function(msg) {
 		}
 	};
 
-	//this.window.setPosition(newWidh + 20, display.workAreaSize.height + 100);
 	var i = 0;
 	var slideUp = function  (cb) {
 		if (i < height){
@@ -51,9 +47,9 @@ Toaster.prototype.show = function(msg) {
 				moveWindow(display.workAreaSize.height - i, function(){
 					if (i === Math.round(height/10)){ // show after first pos set to avoid flicker.
 						self.window.show();
-							if (msg.focus === undefined || msg.focus){
-								remote.getCurrentWindow().focus();
-							}
+						if (msg.focus === undefined || msg.focus){
+							currentWindow.focus();
+						}
 					}
 					slideUp(cb);
 				});
@@ -75,11 +71,11 @@ Toaster.prototype.show = function(msg) {
 	*/
 
 	this.window.webContents.on('did-finish-load', function(){
-		//var newSize = self.window.getSize();
-		width = self.window.getSize()[0];
-		height = self.window.getSize()[1];
-//		self.window.setPosition(display.workAreaSize.width, display.workAreaSize.height);
-		slideUp(function(){});
+		if (self.window){
+			width = self.window.getSize()[0];
+			height = self.window.getSize()[1];
+			slideUp(function(){});
+		}
 		/*
 			# since https://github.com/atom/electron/issues/2425 --> code goes to client.js
 			var window = this;
@@ -90,5 +86,16 @@ Toaster.prototype.show = function(msg) {
 		*/
 	});
 };
+
+var Toaster = function(){
+	return this;
+};
+
+Toaster.prototype.init = function(currentWindow) {
+	ipc.on('electron-toaster-message', function(event, msg) {
+	  showToaster(currentWindow, msg);
+	});
+};
+
 
 module.exports = Toaster;
