@@ -1,7 +1,7 @@
 
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 // In main process.
-var ipc = require('ipc');
+var ipc = require('electron').ipcMain;
 
 
 var showToaster = function(currentWindow, msg) {

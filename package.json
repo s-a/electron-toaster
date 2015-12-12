@@ -1,7 +1,7 @@
 {
   "name": "electron-toaster",
-  "version": "1.0.8",
-  "description": "a simple toaster for electron",
+  "version": "2.0.0",
+  "description": "A simple toaster for electron",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
