@@ -42,7 +42,7 @@ app.on('ready', function() {
 ```javascript
 // In renderer process (web page).
 
-var ipc = require('ipc');
+var ipc = require("electron").ipcRenderer;
 var msg = {
     title : "Awesome!",
     message : "Check this out!<br>Check this out!<br>Check this out!<br>Check this out!<br>Check this out!<br>Check this out!<br>",
