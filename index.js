@@ -1,5 +1,6 @@
 
-var BrowserWindow = require('browser-window');  // Module to create native browser window.
+var electron = require('electron');
+var BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
 // In main process.
 var ipc = require('electron').ipcMain;
 
@@ -20,7 +21,7 @@ var showToaster = function(currentWindow, msg) {
 
 
 	var timer,height, width;
-	var screen = require('screen');
+	var screen = electron.screen;
 	var pos = currentWindow.getPosition();
 	var display = screen.getDisplayNearestPoint({x:pos[0], y:pos[1]});
 
@@ -62,7 +63,7 @@ var showToaster = function(currentWindow, msg) {
 
 	var htmlFile = msg.htmlFile || 'file://' + __dirname + '/toaster.html?';
 	htmlFile += htmlFile + 'foo=bar&title=' + encodeURIComponent(msg.title || "") + '&message=' + encodeURIComponent(msg.message || "") + '&detail=' + encodeURIComponent(msg.detail || "") + "&timeout=" + (msg.timeout || 5000);
-	this.window.loadUrl(htmlFile);
+	this.window.loadURL(htmlFile);
 
 	/*
 		# for debugging
