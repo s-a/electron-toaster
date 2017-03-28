@@ -7,6 +7,7 @@ var ipc = require('electron').ipcMain;
 
 var showToaster = function(currentWindow, msg) {
 	var self = this;
+
 	this.window = new BrowserWindow({
 		width: msg.width,
 		/*height: 1,*/
@@ -92,9 +93,10 @@ var Toaster = function(){
 	return this;
 };
 
+
 Toaster.prototype.init = function(currentWindow) {
 	ipc.on('electron-toaster-message', function(event, msg) {
-	  showToaster(currentWindow, msg);
+	  	showToaster(currentWindow, msg);
 	});
 };
 

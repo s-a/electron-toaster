@@ -1,3 +1,5 @@
+const ipc = require('electron').ipcRenderer;
+
 function getQueryVariable(variable) {
 	var query = window.location.search.substring(1);
 	var vars = query.split("&");
@@ -7,6 +9,14 @@ function getQueryVariable(variable) {
 			return decodeURIComponent(pair[1]);
 		}
 	}
+}
+
+/**
+ * Reply app that user clicked or notification is closing
+ * @param {*} isAuto - true is timeout ended. false if user interacted
+ */
+function replyApp(isAuto){
+	ipc.send('electron-toaster-reply', isAuto);
 }
 
 var autoSize = function() {
@@ -24,7 +34,8 @@ var autoSize = function() {
 
 
 var onKeydown = function(/*e*/) {
-	window.close();
+	replyApp(false);
+	this.close();
 };
 
 var onLoad = function load(/*event*/){
@@ -32,11 +43,15 @@ var onLoad = function load(/*event*/){
     this.removeEventListener("load", load, false); //remove listener, no longer needed
 
 	this.setTimeout(function() {
+		replyApp(true);
 		this.close();
 	}, parseInt(getQueryVariable("timeout")));
 
 	document.addEventListener("keydown", onKeydown, false);
-	document.addEventListener("click", window.close);
+	document.addEventListener("click", ()=>{
+		replyApp(false)
+		this.close();
+	});
 };
 
 document.getElementById("title").innerHTML = getQueryVariable("title");
