@@ -3,6 +3,20 @@
 ```bash
 $ npm install electron-toaster;
 ```
+#Update
+```
+Now support interaction with the app when notification is clicked on visible (displayed).
+i.e if you need to do some stuffs at the main process when Toast is clicked or when Toast displays and timedout.
+```
+```javascript
+//in your main process. listen to the event 'electron-toaster-reply'. i.e
+ipc.on('electron-toaster-reply', (event, isAuto)=>{
+    console.log('Toaster just spoke to me', isAuto);
+})
+//Note the isAuto argument. It is passed from electron-toaster to tell you 
+//true - if timeout was reached before notification was closed
+//false - if user interacted with toaster onclick. you might want to render a dialog or something for this reason.
+```
 
 # Usage
 
